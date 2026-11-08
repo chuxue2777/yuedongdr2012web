@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<title>乐动达人 2013 · 网页版</title>
+<link rel="stylesheet" href="css/style.css?v=38">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="game"></canvas>
+  </div>
+  <!-- ★ 预载层 = 官方 loading 场景整图（assets/atlas/loading.png 里的
+       ld_loadingScene_bg 320×480）+ 官方进度条（ld_progress_bg / shell）。
+       里面所有东西都按 320×480 逻辑坐标摆，外层再用 transform:scale 铺满屏幕，
+       这样和 canvas 里的坐标完全对得上，不需要二次换算。 -->
+  <div id="loading">
+    <div class="ld-frame" id="ldframe">
+      <div class="ld-bg"></div>
+      <div class="ld-bar"></div>
+      <div class="ld-shell"></div>
+      <!-- 填充单独一层、压在 shell 之上：官方 shell 把未填充段涂成不透明黑、
+           填充段涂成 55% 黑，如果填充画在 shell 下面会被压成暗青看不清。 -->
+      <div class="ld-fill"><i id="pbar"></i></div>
+    </div>
+    <div class="tip" id="ltip"></div>
+  </div>
+  <div id="errbox"></div>
+</div>
+
+<script>
+window.__ERRS = [];
+window.addEventListener('error', function (e) {
+  window.__ERRS.push((e.message || '') + ' @' + (e.filename || '') + ':' + (e.lineno || 0));
+  var b = document.getElementById('errbox');
+  b.style.display = 'block';
+  b.textContent = window.__ERRS.join('\n');
+  document.title = 'ERR: ' + window.__ERRS[0];
+});
+</script>
+
+<!-- ★ 版本号 ?v=38：改任何 js 之后必须 +1。
+     不加的话浏览器会一直用缓存里的旧脚本 —— 界面上就表现为「改了跟没改一样」，
+     这一条已经踩过好几次，别再省。 -->
+<script src="js/cc.js?v=38"></script>
+<script src="js/lua.js?v=38"></script>
+<script src="js/cocos2d_lua.js?v=38"></script>
+<!-- ★ 各曲包 config.lua 的原文，内联成 JS：
+     用 file:// 双击打开时 XHR 会被跨域拦掉，演奏页背景会退化成一屏白色竖条。 -->
+<script src="js/lua_src.js?v=38"></script>
+<script src="js/atlas.js?v=38"></script>
+<script src="js/songs.js?v=38"></script>
+<script src="js/scene_game.js?v=38"></script>
+<script src="js/scenes_menu.js?v=38"></script>
+<script src="js/main.js?v=38"></script>
+</body>
+</html>
